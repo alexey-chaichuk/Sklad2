@@ -5,7 +5,10 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.device.ScanManager
+import android.os.Bundle
 import android.util.Log
+import android.view.View
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import ru.chaichuk.sklad2.R
@@ -16,12 +19,19 @@ class BarcodeFragment : Fragment(R.layout.main_fragment) {
 
     private val viewModel: BarcodeViewModel by viewModels { BarcodeViewModelFactory() }
 
+    private var tvMessage : TextView? = null
+
     private val SCAN_ACTION = "urovo.rcv.message"
     private var mScanManager: ScanManager? = null
     private var isScaning = false
     private var barcodeStr = "---"
     private var barcodeType: Byte = 0
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        tvMessage = view.findViewById(R.id.message)
+    }
 
     override fun onResume() {
         super.onResume()
@@ -67,8 +77,8 @@ class BarcodeFragment : Fragment(R.layout.main_fragment) {
             Log.i("barcode", "----codetype-- ${barcodeType}")
             barcodeStr = String(barcode!!, 0, barcodelen)
             Log.i("barcode", barcodeStr)
-            /*tvBarcode.setText(ru.momentum.sklad.AddBarcodeActivity.barcodeStr)
-            tvBarcodeType.setText("type: " + ru.momentum.sklad.AddBarcodeActivity.barcodeType)
+            tvMessage?.setText(barcodeStr)
+            /*tvBarcodeType.setText("type: " + ru.momentum.sklad.AddBarcodeActivity.barcodeType)
             addThisBarcode.setEnabled(true)*/
 
 //            Intent intentBarcodeSearchResp = new Intent(context, BarcodeSearchRespActivity.class);
